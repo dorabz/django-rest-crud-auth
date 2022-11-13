@@ -7,6 +7,10 @@ from api.permissions import IsOwnerOrReadOnly,IsUserOrReadOnly
 from rest_framework import status, viewsets, mixins
 from rest_framework.exceptions import NotFound
 
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
@@ -15,13 +19,24 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
     permission_classes = [IsUserOrReadOnly]
+    authentication_classes = (TokenAuthentication,)
    
 class CreateUserView(generics.CreateAPIView):
     model = User
-    permission_classes = [
-        permissions.AllowAny # Or anon users can't register
-    ]
+    permission_classes = [permissions.AllowAny]
     serializer_class = serializers.UserSerializer
+
+    def post(self, request, format='json'):
+        serializer = serializers.UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                token = Token.objects.create(user=user)
+                json = serializer.data
+                json['token'] = token.key
+                return Response(json, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RecipeList(generics.ListCreateAPIView):
     queryset = Recipe.objects.all()
@@ -50,3 +65,5 @@ class UserRecipesViewSet(viewsets.ModelViewSet):
         except User.DoesNotExist:
             raise NotFound('A user with this id does not exist')
         return self.queryset.filter(owner=owner)
+
+
