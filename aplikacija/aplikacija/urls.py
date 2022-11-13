@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api-auth/', include('rest_framework.urls')),
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'), # login za testove - curl itd
-    path('', TemplateView.as_view(template_name = "index.html")), # index stranica s dokumentacijom
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'), # login for test file - API Token Auth
+    path('', TemplateView.as_view(template_name = "index.html")), # index documentation page
 ]

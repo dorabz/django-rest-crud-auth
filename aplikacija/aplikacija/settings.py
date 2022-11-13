@@ -78,7 +78,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
-    # ovo ako hoćemo da je za sve potrebna autentifikacija - mi ne - get može i anonym
+    # outcomment if we want to force auth on GET - currently is GET anonym
     #'DEFAULT_PERMISSION_CLASSES': (
     #    'rest_framework.permissions.IsAuthenticated',
     #)

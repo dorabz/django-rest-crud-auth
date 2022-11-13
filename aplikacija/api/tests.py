@@ -1,16 +1,11 @@
-import json
-from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
-
-from api.serializers import UserSerializer, RecipeSerializer
-from api.views import UserDetail
-from api.models import Recipe
-
-from django.contrib import auth
 from rest_framework.test import APIClient
+from django.contrib.auth.models import User
+from api.models import Recipe
+from rest_framework.authtoken.models import Token
+
 
 class CreateUserTestCase(APITestCase):
 

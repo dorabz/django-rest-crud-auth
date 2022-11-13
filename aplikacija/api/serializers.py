@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from api.models import Recipe
+ 
+#  serializer - converting complex data such as querysets and model instances to be converted into data
+#  types understandable by javascript and front-end frameworks e.g JSON 
 
-from django.contrib.auth.password_validation import validate_password
 
 class RecipeSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
